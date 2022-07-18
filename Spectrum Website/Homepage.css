@@ -9,10 +9,10 @@ body{
   
   font-family: Work Sans;
   color: white;
-  background-color: rgb(19, 114, 74);
+  background-color: rgb(33, 161, 181);
   background-image: url('All pictures/home.jpg');
   background-repeat: no-repeat;
-  background-size: 100% 1200px;
+  background-size: 100% 850px;
   background-blend-mode: overlay;
   
   
@@ -22,7 +22,7 @@ body{
   padding-right: 10px;
   height: 80px;
   width: 100%;
-  background-color: #1a9c75;
+  background-color: #171717;
   
 }
 .spectrum_logo{
@@ -45,6 +45,10 @@ body{
 .homepage_header ul{
   float: right;
 }
+.homepage_header .fa{
+  font-size: 17px;
+  margin-right: 4px;
+}
 .homepage_header ul li{
   display:inline-block;
   line-height: 80px;
@@ -52,13 +56,14 @@ body{
 }
 .homepage_header ul li a{
   color: white;
-  font-size: 23px;
-  text-transform: uppercase;
-  padding:6px 10px;
+  font-size: 20px;
+  
+  padding:6px 8px;
+  padding-bottom: 5px;
   border-radius: 3px;
 }
 a:hover{
-  background: #085c43 ;
+  background: gray ;
   transition: .5s;
 }
 .checkbtn{
@@ -114,7 +119,7 @@ a:hover{
     line-height: 30px;
   }
   a:hover{
-  background: #43b492;
+  background: gray;
   color: aqua;
   }
   #check:checked ~ ul{
@@ -123,7 +128,7 @@ a:hover{
 }
 
 .welcomehead{
-  margin-top: 300px;
+  margin-top: 250px;
   text-align: center;
   font-size: 70px;
 }
