@@ -17,7 +17,7 @@ include('connection.php');
   <h1>🤝 Meet Our Team</h1>
 
   <?php
-  $sql = "SELECT username, post, role, image_url FROM users ORDER BY role DESC, username ASC";
+  $sql = "SELECT username, full_name, post, role, image_url FROM users ORDER BY role DESC, username ASC";
   $result = $conn->query($sql);
 
   if ($result && $result->num_rows > 0) {
@@ -32,7 +32,7 @@ include('connection.php');
 
           // Info Section
           echo '<div class="member-info">';
-          echo '<h2>'.htmlspecialchars($row['username']).'</h2>';
+          echo '<h2>'.htmlspecialchars($row['full_name'] ?? $row['username']).'</h2>';
           echo '<p class="position">'.htmlspecialchars($row['post']).'</p>';
           echo '<small class="role">Role: '.ucfirst($row['role']).'</small>';
           echo '</div>';

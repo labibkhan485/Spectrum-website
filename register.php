@@ -8,6 +8,7 @@ $message = "";
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
+    $full_name = trim($_POST['full_name']);
     $email = trim($_POST['email']);
     $roll = trim($_POST['roll']);
     $position = trim($_POST['position']);
@@ -20,6 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (empty($username)) {
         $errors[] = "Username is required";
+    }
+    if (empty($full_name)) {
+        $errors[] = "Full name is required";
     }
     if (empty($email)) {
         $errors[] = "Email is required";
@@ -103,9 +107,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $password_hash = md5($password);
 
                 // Insert user
-                $sql = "INSERT INTO users (username, email, post, password_hash, role, image_url) VALUES (?,?,?,?,?,?)";
+                $sql = "INSERT INTO users (username, full_name, email, post, password_hash, role, image_url) VALUES (?,?,?,?,?,?,?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssss", $username, $email, $position, $password_hash, $role, $image_url);
+                $stmt->bind_param("sssssss", $username, $full_name, $email, $position, $password_hash, $role, $image_url);
 
                 if ($stmt->execute()) {
                     $message = "✅ Registration successful! <a href='LogIn.php'>Login now</a>";
@@ -146,6 +150,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <label>Username</label>
       <input type="text" name="username" required>
 
+      <label>Full Name</label>
+      <input type="text" name="full_name" required>
+
       <label>Email</label>
       <input type="email" name="email" required>
 
@@ -153,7 +160,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <input type="text" name="roll" required>
 
       <label>Position in Club</label>
-      <input type="text" name="position" required>
+      <select name="position" required>
+        <option value="">Select Position</option>
+        <option value="President">President</option>
+        <option value="General Secretary">General Secretary</option>
+        <option value="Vice-president">Vice-president</option>
+        <option value="Assistant General Secretary">Assistant General Secretary</option>
+      </select>
 
       <label>Password</label>
       <input type="password" name="password" required>

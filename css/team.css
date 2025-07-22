@@ -5,6 +5,7 @@ body {
   color: #FFD700;
   margin: 0;
   padding: 0;
+  padding-top: 80px; /* Space for fixed navbar */
 }
 
 .team-container {
