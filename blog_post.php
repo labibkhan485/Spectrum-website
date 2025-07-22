@@ -42,6 +42,6 @@ if ($result && $result->num_rows > 0) {
   <a class="back-btn" href="blog.php">⬅ Back to All Blogs</a>
 </div>
 
-<script src="js/homepage.js"></script>
+<script src="content.js"></script>
 </body>
 </html>

@@ -15,25 +15,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm_password = $_POST['confirm_password'];
     $reg_key = trim($_POST['reg_key']);
     
-    // Image upload (optional)
-    $image_url = NULL;
-    if (!empty($_FILES['image']['name'])) {
-        $target_dir = "images/profiles/";
-        if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0777, true);
-        }
-        $image_name = time() . "_" . basename($_FILES["image"]["name"]);
-        $target_file = $target_dir . $image_name;
-
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $image_url = $target_file;
-        }
+    // Validate all required fields
+    $errors = [];
+    
+    if (empty($username)) {
+        $errors[] = "Username is required";
     }
-
-    // Validate passwords
-    if ($password !== $confirm_password) {
-        $message = "❌ Passwords do not match!";
+    if (empty($email)) {
+        $errors[] = "Email is required";
+    }
+    if (empty($roll)) {
+        $errors[] = "Roll number is required";
+    }
+    if (empty($position)) {
+        $errors[] = "Position in club is required";
+    }
+    if (empty($password)) {
+        $errors[] = "Password is required";
+    }
+    if (empty($confirm_password)) {
+        $errors[] = "Confirm password is required";
+    }
+    if (empty($reg_key)) {
+        $errors[] = "Registration key is required";
+    }
+    if (empty($_FILES['image']['name'])) {
+        $errors[] = "Profile image is required";
+    }
+    
+    // If there are missing fields, show error message
+    if (!empty($errors)) {
+        $message = "❌ Please fill in all required fields: " . implode(", ", $errors);
     } else {
+        // Image upload (mandatory)
+        $image_url = NULL;
+        $target_dir = "images/profiles/";
+        
+        // Create directory if it doesn't exist
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
+        
+        // Validate file type
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        $file_type = $_FILES['image']['type'];
+        
+        if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+            $message = "❌ Image upload failed!";
+        } elseif (!in_array($file_type, $allowed_types)) {
+            $message = "❌ Only JPG, JPEG, PNG and GIF files are allowed!";
+        } else {
+            $image_name = time() . "_" . basename($_FILES["image"]["name"]);
+            $target_file = $target_dir . $image_name;
+
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                $image_url = $target_file;
+            } else {
+                $message = "❌ Failed to save image!";
+            }
+        }
+
+        // Validate passwords
+        if (!$message && $password !== $confirm_password) {
+        $message = "❌ Passwords do not match!";
+    } elseif (!$message) {
         // Determine role from registration key
         $role = "";
         if ($reg_key === ADMIN_REG_KEY) {
@@ -69,6 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         }
+    }
     }
 }
 ?>
@@ -115,8 +161,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <label>Confirm Password</label>
       <input type="password" name="confirm_password" required>
 
-      <label>Profile Image (optional)</label>
-      <input type="file" name="image" accept="image/*">
+      <label>Profile Image </label>
+      <input type="file" name="image" accept="image/*" required>
 
       <label>Registration Key</label>
       <input type="text" name="reg_key" required placeholder="Enter Admin or Member key">
